@@ -4,31 +4,29 @@
 
 using namespace std;
 
-unsigned long getByteCount(ifstream& file);
+unsigned long getByteCount(string filename);
 
 int main(int argc, char* argv[]) {
     string filename = "test.file";
-    ifstream my_file(filename);
+
+    unsigned long byte_count = getByteCount(filename);
+    cout << "The file '" << filename << "' is " << byte_count << " bytes\n";
+
+}
+
+unsigned long getByteCount(string filename) {
+    ifstream my_file(filename, ios::in|ios::binary|ios::ate);
 
     if (!my_file) {
         cerr << "Error opening file '" << filename << "'\n";
         return 1;
     }
 
-    unsigned long byte_count = getByteCount(my_file);
-    cout << "The file '" << filename << "' is " << byte_count << " bytes\n";
+    unsigned long byte_count = 0;
+    my_file.seekg(0, ios::end);
+    byte_count = my_file.tellg();
 
     my_file.close();
-
-}
-
-unsigned long getByteCount(ifstream& file) {
-    unsigned long byte_count = 0;
-    unsigned char current_byte = 0;
-    
-    while (file >> current_byte) {
-        byte_count++;
-    }
 
     return byte_count;
 }
