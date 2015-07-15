@@ -3,7 +3,7 @@ class File:
         self.filename = filename
 
     def getSize(self):
-        my_file = open("test.file", "rb")
+        my_file = open(self.filename, "rb")
 
         byte_count = 0
         while my_file.read(1):
@@ -14,11 +14,24 @@ class File:
 
     def setBytes(self, bytes):
         # Take an array of bytes and write them to the file
+        my_file = open(self.filename, "wb")
 
-        pass
+        my_file.write(bytes)
 
-    def getBytes(self):
+    def getBytes(self, num_bytes = None, starting_byte = 0):
         # Read the file and return an array of bytes, maybe should cache this
+        if (num_bytes == None):
+            num_bytes = self.getSize()
+
+        my_file = open(self.filename, "rb")
+
+        my_file.seek(starting_byte)
+        all_bytes = my_file.read(num_bytes)
+
+        print("tell = " + str(my_file.tell()))
+
+        return all_bytes
+
 
     def appendBytes(self, bytes):
         # Take an array of bytes and add them to the
